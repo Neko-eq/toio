@@ -1680,7 +1680,7 @@ function drawTank(ctx, x, y, angle, color = 'blue') {
     }
 
     window.requestAnimationFrame(updateStatus);
-};
+
 
 // --- テスト用：2秒ごとに弾を発射 ---
 setInterval(() => {
