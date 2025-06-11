@@ -1690,28 +1690,39 @@ setInterval(() => {
 }, 2000);
 
 // updateStatus は initialize() 内で呼び出されているためここで自動更新が始まる
-const mapData = [
-    [0, 0, 1, 0, 0],
-    [1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0],
-    [0, 1, 1, 0, 0],
-    [0, 0, 0, 1, 0]
-];
+// グローバルにマップ設定
+const MAP_ROWS = 8;
+const MAP_COLS = 10;
+const CELL_SIZE = 40; // px
+let mapData = [];
+
 // 0 = 通路, 1 = 壁
-function drawMap(ctx, mapData, cellSize) {
+function generateRandomMap(rows, cols, wallRate = 0.2) {
+    mapData = [];
+    for (let y = 0; y < rows; y++) {
+        const row = [];
+        for (let x = 0; x < cols; x++) {
+            row.push(Math.random() < wallRate ? 1 : 0);
+        }
+        mapData.push(row);
+    }
+}
+function drawMap(ctx) {
     for (let y = 0; y < mapData.length; y++) {
         for (let x = 0; x < mapData[y].length; x++) {
             if (mapData[y][x] === 1) {
                 ctx.fillStyle = "gray";
-                ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            } else {
+                ctx.strokeStyle = "#ddd";
+                ctx.strokeRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
     }
 }
+// drawBackground の後、drawMap を追加
 drawBackground(ctx, canvas);
-drawMap(ctx, mapData, 40); // 40px グリッド
-function isBlocked(x, y) {
-    const col = Math.floor(x / cellSize);
-    const row = Math.floor(y / cellSize);
-    return mapData[row]?.[col] === 1;
+drawMap(ctx);
+const initialize = () => {
+    generateRandomMap(MAP_ROWS, MAP_COLS); // マップ生成
 }
