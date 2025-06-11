@@ -1597,8 +1597,7 @@ const initialize = () => {
     });
 
     resetAll();
-    // --- 元の updateStatus 関数を修正して弾やタンク描画処理を追加 ---
-const updateStatus = () => {
+    updateStatus();
     handleHomeButton();
     registerInput();
     opSettings();
